@@ -108,9 +108,9 @@ TO RETRIEVE SOME DATA FROM OP_RETURNs IN THE BLOCKCHAIN
 
 On the command line:
 
-* python retrieve-OP_RETURN.py <ref> <testnet (optional)>
+* python retrieve-OP_RETURN.py <txid> <testnet (optional)>
 
-  <ref> is the reference that was returned by a previous storage operation
+  <txid> is the transaction id that was returned by a previous storage operation
   <testnet> should be 1 to use the bitcoin testnet, otherwise it can be omitted
   
 * Outputs an error if one occurred or if successful, the retrieved data in hexadecimal
@@ -120,8 +120,8 @@ On the command line:
   
 * Examples:
 
-  python retrieve-OP_RETURN.py 356115-052075
-  python retrieve-OP_RETURN.py 396381-059737 1
+  python retrieve-OP_RETURN.py 4ce4913ff25d71e71483e5484e9f3f4c5de1910a7e525ca270355053d7ac7c94
+  python retrieve-OP_RETURN.py 4ce4913ff25d71e71483e5484e9f3f4c5de1910a7e525ca270355053d7ac7c94 1
   
   
 As a library:

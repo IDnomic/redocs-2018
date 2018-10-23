@@ -37,10 +37,10 @@ except NameError:
 # User-defined quasi-constants
 
 OP_RETURN_BITCOIN_IP='127.0.0.1' # IP address of your bitcoin node
-OP_RETURN_BITCOIN_USE_CMD=False # use command-line instead of JSON-RPC?
+OP_RETURN_BITCOIN_USE_CMD=True # use command-line instead of JSON-RPC?
 
 if OP_RETURN_BITCOIN_USE_CMD:
-	OP_RETURN_BITCOIN_PATH='/usr/bin/bitcoin-cli' # path to bitcoin-cli executable on this server
+	OP_RETURN_BITCOIN_PATH='/home/valois/bin/bitcoin-cli' # path to bitcoin-cli executable on this server
 	
 else:
 	OP_RETURN_BITCOIN_PORT='' # leave empty to use default port for mainnet/testnet
@@ -372,6 +372,16 @@ def OP_RETURN_get_mempool_txn(txid, testnet):
 	raw_txn=OP_RETURN_bitcoin_cmd('getrawtransaction', testnet, txid)
 	return OP_RETURN_unpack_txn(OP_RETURN_hex_to_bin(raw_txn))
 
+def OP_RETURN_get_asms(txid, testnet):
+	raw_txn = OP_RETURN_bitcoin_cmd('getrawtransaction', testnet, txid, 1)
+	op_return_datas = list()
+	for vout in raw_txn['vout']:
+		script_pubkey = vout['scriptPubKey']
+		if script_pubkey['asm'].startswith('OP_RETURN'):
+			command, op_return_data = script_pubkey['asm'].split()
+			op_return_datas.append(op_return_data)
+	return op_return_datas
+
 
 def OP_RETURN_get_mempool_txns(testnet):
 	txids=OP_RETURN_list_mempool_txns(testnet)
@@ -406,7 +416,7 @@ def OP_RETURN_get_block_txns(height, testnet):
 # Talking to bitcoin-cli
 
 def OP_RETURN_bitcoin_check(testnet):
-	info=OP_RETURN_bitcoin_cmd('getinfo', testnet)
+	info=OP_RETURN_bitcoin_cmd('getwalletinfo', testnet)
 	
 	return isinstance(info, dict) and 'balance' in info
 
@@ -415,7 +425,8 @@ def OP_RETURN_bitcoin_cmd(command, testnet, *args): # more params are read from 
 	if OP_RETURN_BITCOIN_USE_CMD:
 		sub_args=[OP_RETURN_BITCOIN_PATH]
 		if testnet:
-			sub_args.append('-testnet')
+			# sub_args.append('-testnet')
+			sub_args.append('-regtest')
 		
 		sub_args.append(command)
 		
