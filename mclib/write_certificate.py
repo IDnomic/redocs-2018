@@ -23,6 +23,9 @@ if __name__ == '__main__':
 	key = hashlib.sha512(certbin).hexdigest()[:16]
 
 	# Check certificate not already in or revoked
+	cert_inserted = api.is_cert_inserted(stream, key, data_hex)
+	if cert_inserted:
+		sys.exit("This certificate is already in the ledger")
 
 	# Insert certificate
 	response = api.publish(stream, key, data_hex)

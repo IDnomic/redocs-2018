@@ -22,13 +22,8 @@ if __name__ == '__main__':
 	key = hashlib.sha512(certbin).hexdigest()[:16]
 
 	# Check certificate existence
-	cert_inserted = False
-	items = api.liststreamitems(stream)
-	for item in items:
-		if item['key'] == key and item['data'] == data_hex:
-			cert_inserted = True
 
-	cert_valid = cert_inserted
+	cert_valid = api.is_cert_inserted(stream, key, data_hex)
 	if cert_valid:
 		print("Valid certificate")
 	else:
