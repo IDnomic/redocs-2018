@@ -1,0 +1,11 @@
+.valid {
+	background-color: #009900;
+}
+
+.invalid {
+	background-color: #cc0000;
+}
+
+.pending {
+	background-color: white;
+}
