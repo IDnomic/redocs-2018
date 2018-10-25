@@ -6,7 +6,7 @@
 		cert = msg[cert_idx];
 		var node = document.getElementsByClassName("cert")[0];
 		var newnode = node.cloneNode(true);
-		newnode.querySelector('.cert_fingerprint').innerHTML = cert.fingerprint.sha256.replace(/:/g, '').toLowerCase();
+		newnode.querySelector('.cert_fingerprint').innerHTML = cert.subject;
 		if (cert.is_bcvalid){
 			newnode.classList.add("valid");
 		}
