@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
-	"name": "Test extension",
-	"version": "1.0",
-	"description": "Test extension.",
+	"name": "IDnomic blockchain PKI",
+	"version": "0.1",
+	"description": "Check if certificates used by TLS have been added in the IDnomic blockchain",
 	"background": {
 	  "scripts": ["ledger-pki.js"]
 	},
