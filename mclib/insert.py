@@ -27,7 +27,7 @@ def sha256s(hash_string):
     return sha_signature
 
 def publish(stream,jsonobj,key):
-	cmd = "multichain-cli chain2 publish " + stream + " " + key + " " + hexcert(str(jsonobj))
+	cmd = "multichain-cli chain1 publish " + stream + " " + key + " " + hexcert(str(jsonobj))
 	result = run(cmd.split())
 	return result
 

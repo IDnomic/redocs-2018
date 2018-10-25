@@ -13,8 +13,9 @@ from urllib.parse import *
 import mcapi
 
 PORT_NUMBER = 8080
-CHAIN = "chain2"
+CHAIN = "chain1"
 STREAM = "stream1"
+
 API = mcapi.connect(CHAIN)
 
 def hexcert(content):
