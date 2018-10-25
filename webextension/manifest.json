@@ -1,0 +1,23 @@
+{
+	"manifest_version": 2,
+	"name": "Test extension",
+	"version": "1.0",
+	"description": "Test extension.",
+	"background": {
+	  "scripts": ["ledger-pki.js"]
+	},
+	"permissions": [
+		"tabs",
+		"webRequest",
+		"webRequestBlocking",
+		"<all_urls>"
+	],
+	"icons": {
+	  "48": "icons/favicon.ico"
+	},
+	"browser_action": {
+	  "default_icon": "icons/favicon.ico",
+	  "default_title": "Check certificate state",
+	  "default_popup": "popup/cert_states.html"
+	}
+}
