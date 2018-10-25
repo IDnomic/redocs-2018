@@ -19,7 +19,7 @@ var log = console.log.bind(console);
 var ALL_SITES = { urls: ['<all_urls>'], types: ['main_frame'] };
 var extraInfoSpec = ['blocking'];
 
-const serv_location = 'http://127.0.0.1:8080/?action=check&stream=stream1&hash=';
+const serv_location = 'http://localhost:8080/?action=check_certificate&stream=stream1&hash=';
 
 const certificates = Array();
 const checked_fingerprints = Array();
@@ -32,9 +32,11 @@ browser.webRequest.onHeadersReceived.addListener(async function(details){
 		rawDER: false
 	});
 
+
 	for(cert_rank in securityInfo.certificates){
 		let certificate = securityInfo.certificates[cert_rank];
 		let sha256_digest = certificate.fingerprint.sha256.replace(/:/g, '').toLowerCase();
+		log(sha256_digest);
 
 		if (checked_fingerprints.indexOf(certificate.fingerprint.sha256) != -1){
 			continue;
@@ -49,11 +51,12 @@ browser.webRequest.onHeadersReceived.addListener(async function(details){
 		req.open('GET', req_location, true);
 		req.onload = function (e) {
 			if (req.readyState === 4 && req.status === 200) {
-				if (req.responseText == "invalid") {
+				response = JSON.parse(req.responseText);
+				if (response.data == "False") {
 					invalidCertificates(tabId);
 					valid = false;
 				}
-				else if (req.responseText == "valid"){
+				else if (response.data == "True"){
 					valid = true;
 				}
 				cert_idx = certificates.indexOf(certificate);

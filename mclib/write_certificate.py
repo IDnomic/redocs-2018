@@ -5,6 +5,7 @@ import mcapi
 import binascii
 import hashlib
 from Savoir import Savoir
+from OpenSSL import crypto
 
 if __name__ == '__main__':
 	chain = sys.argv[1]
@@ -18,15 +19,16 @@ if __name__ == '__main__':
 	# Check permission
 
 	# Read certificate
-	certbin = open(certfile, 'rb').read()
-	data_hex = binascii.hexlify(certbin).decode('utf-8')
-	key = hashlib.sha512(certbin).hexdigest()[:16]
+	cert_txt = open(certfile, 'r').read()
+	cert = crypto.load_certificate(crypto.FILETYPE_PEM, cert_txt)
+	hex_digest = cert.digest('sha256').decode().replace(':', '').lower()
+	key = hex_digest[:10]
 
 	# Check certificate not already in or revoked
-	cert_inserted = api.is_cert_inserted(stream, key, data_hex)
+	cert_inserted = api.is_cert_inserted(stream, key, hex_digest)
 	if cert_inserted:
 		sys.exit("This certificate is already in the ledger")
 
 	# Insert certificate
-	response = api.publish(stream, key, data_hex)
+	response = api.publish(stream, key, hex_digest)
 	print(response)
