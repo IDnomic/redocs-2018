@@ -33,7 +33,11 @@ def generate_json(typetr,key,content,chash):
 	return cert_json
 
 def check_certificate(stream,chash):
-	result = API.liststreamitems(stream)
+#	result = API.liststreamitems(stream)
+	tot_items = API.liststreams(stream)[0]['items']
+	result = []
+	for i in range(tot_items):
+		result.append(API.liststreamitems(stream, False, 1, i))
 	found = "False"
 	for key in result:
 		data = unhexcert(key['data'])

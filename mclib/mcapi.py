@@ -37,12 +37,15 @@ def is_subscribed(api, stream):
 	return subscribed
 
 def is_cert_inserted(api, stream, key, data_hex):
-	cert_inserted = False
-	items = api.liststreamitems(stream)
-	for item in items:
-		if item['key'] == key and item['data'] == data_hex:
-			cert_inserted = True
-	return cert_inserted
+    cert_inserted = False
+    tot_items = api.liststreams(stream)[0]['items']
+    items = []
+    for i in range(tot_items):
+        items.append(api.liststreamitems(stream, False, 1, i))
+    for item in items:
+        if item['key'] == key and item['data'] == data_hex:
+            cert_inserted = True
+    return cert_inserted
 
 
 Savoir.is_subscribed = is_subscribed
